@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 1</title>
+    <style>
+      body {
+        background-color: lightgray;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+      }
+      .header {
+        max-width: 1425px;
+        margin: 0 auto;
+        background-color: rgb(31, 199, 131);
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        font-size: 30px;
+      }
+      .header > p {
+        font-size: 24px;
+      }
+      .content {
+        max-width: 600px;
+        margin: 10px auto;
+        background-color: rgb(31, 199, 131);
+        border-radius: 10px;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 24px;
+      }
+
+      .btn {
+        max-width: 300px;
+        margin: 30px auto;
+      }
+      .button {
+        display: block;
+        text-decoration: none;
+        color: black;
+        background-color: rgb(31, 199, 131);
+        margin: 15px 25px;
+        text-align: center;
+        font-size: 22px;
+        padding: 10px 20px;
+        border-radius: 7px;
+      }
+      .button:hover {
+        background-color: rgb(63, 112, 210);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>Задача 1</div>
+      <p>Знайти суми елементів</p>
+    </div>
+    <div class="content">
+      <p>Відповідь до задачі:</p>
+      <script>
+        const minVal = 1
+        const maxVal = 100
+
+        function randomValue(minVal, maxVal) {
+          return minVal + Math.floor(Math.random() * (maxVal - minVal + 1))
+        }
+
+        function createRandomArr(arrLength, minVal, maxVal) {
+          let arr = []
+          for (let i = 0; i < arrLength; i++) {
+            let randomElem = randomValue(minVal, maxVal)
+            arr.push(randomElem)
+          }
+          return arr
+        }
+
+        function createRandomTable(arrLength, minVal, maxVal) {
+          let table = []
+          for (let i = 0; i < arrLength; i++) {
+            let randomRow = createRandomArr(arrLength, minVal, maxVal)
+            table.push(randomRow)
+          }
+          return table
+        }
+
+        function displayTable(table) {
+          document.write('<table border=1px align="center"">')
+          for (let rowNum = 0; rowNum < table.length; rowNum++) {
+            document.write('<tr>')
+            for (let colNum = 0; colNum < table.length; colNum++) {
+              document.write(`<td>${table[rowNum][colNum]}</td>`)
+            }
+            document.write('</tr>')
+          }
+          document.write('</table>')
+        }
+
+        let arrLength = parseInt(prompt('Введіть довжину масиву'))
+        let table = createRandomTable(arrLength, minVal, maxVal)
+        displayTable(table)
+
+        // 1) Знайти суму елементів у 1й чверті
+        function sumElemsInFirstQuarters(table) {
+          let endRowElem = Math.floor(table.length / 2)
+          let endColElem = Math.floor(table.length / 2)
+          let sum = 0
+          for (let rowIndex = 0; rowIndex < endRowElem; rowIndex++) {
+            for (let colIndex = 0; colIndex < endColElem; colIndex++) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(
+          `<br> Сума елементів у першій чверті: ${sumElemsInFirstQuarters(
+            table
+          )}<br> <br>`
+        )
+
+        // 2) Знайти суму елементів у 2й чверті
+        function sumElemsInSecondQuarters(table) {
+          let endRowElem = Math.floor(table.length / 2)
+          let startColElem = Math.floor(table.length / 2)
+          let sum = 0
+          for (let rowIndex = 0; rowIndex < endRowElem; rowIndex++) {
+            for (
+              let colIndex = startColElem;
+              colIndex < table.length;
+              colIndex++
+            ) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(
+          `Сума елементів у другій чверті: ${sumElemsInSecondQuarters(
+            table
+          )}<br> <br>`
+        )
+
+        // 3) Знайти суму елементів у 3й чверті
+        function sumElemsInThirdQuarters(table) {
+          let startRowElem = Math.floor(table.length / 2)
+          let endColElem = Math.floor(table.length / 2)
+          let sum = 0
+          for (
+            let rowIndex = startRowElem;
+            rowIndex < table.length;
+            rowIndex++
+          ) {
+            for (let colIndex = 0; colIndex < endColElem; colIndex++) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(
+          `Сума елементів у третій чверті: ${sumElemsInThirdQuarters(
+            table
+          )}<br> <br>`
+        )
+        // 4) Знайти суму елементів у 4й чверті
+        function sumElemsInFourthQuarters(table) {
+          let startRowElem = Math.floor(table.length / 2)
+          let startColElem = Math.floor(table.length / 2)
+          let sum = 0
+          for (
+            let rowIndex = startRowElem;
+            rowIndex < table.length;
+            rowIndex++
+          ) {
+            for (
+              let colIndex = startColElem;
+              colIndex < table.length;
+              colIndex++
+            ) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(
+          `Сума елементів у четвертій чверті: ${sumElemsInFourthQuarters(
+            table
+          )}<br> <br>`
+        )
+
+        // 5) Суму парних рядків
+
+        function sumEvenRow(table) {
+          let sum = 0
+          for (let rowIndex = 0; rowIndex < table.length; rowIndex += 2) {
+            for (let colIndex = 0; colIndex < table.length; colIndex++) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(`Сума парних рядків: ${sumEvenRow(table)}<br> <br>`)
+
+        // 6) Суму непарних стовпців
+
+        function sumOddRow(table) {
+          let sum = 0
+          for (let rowIndex = 1; rowIndex < table.length; rowIndex += 2) {
+            for (let colIndex = 0; colIndex < table.length; colIndex++) {
+              sum += table[rowIndex][colIndex]
+            }
+          }
+          return sum
+        }
+
+        document.write(`Сума непарних рядків: ${sumOddRow(table)}<br> <br>`)
+
+        // 7) У парних рядках – непарні стовпці, у непарних – парні.
+
+        function sumElemEvenRowsOddColsAndOddRowsEvenCols(table) {
+          let sum1 = 0
+          let sum2 = 0
+
+          for (let rowIndex = 0; rowIndex < table.length; rowIndex += 2) {
+            for (let colIndex = 1; colIndex < table.length; colIndex += 2) {
+              sum1 += table[rowIndex][colIndex]
+            }
+          }
+          for (let rowIndex = 1; rowIndex < table.length; rowIndex += 2) {
+            for (let colIndex = 0; colIndex < table.length; colIndex += 2) {
+              sum2 += table[rowIndex][colIndex]
+            }
+          }
+          return [sum1, sum2]
+        }
+
+        document.write(
+          `Сума у парних рядках непарних стовпців: ${
+            sumElemEvenRowsOddColsAndOddRowsEvenCols(table)[0]
+          }<br><br> Сума у непарних рядках парних стовпців ${
+            sumElemEvenRowsOddColsAndOddRowsEvenCols(table)[1]
+          }`
+        )
+      </script>
+    </div>
+    <div class="btn">
+      <a class="button" href="./index.html">На головну</a>
+    </div>
+  </body>
+</html>

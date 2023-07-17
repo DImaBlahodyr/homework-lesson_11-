@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task 2</title>
+    <style>
+      body {
+        background-color: lightgray;
+        font-size: 20px;
+        font-family: 'Times New Roman', Times, serif;
+      }
+      .header {
+        max-width: 1425px;
+        margin: 0 auto;
+        background-color: rgb(31, 199, 131);
+        padding: 20px;
+        text-align: center;
+        border-radius: 10px;
+        font-size: 30px;
+      }
+      .header > p {
+        font-size: 24px;
+      }
+      .content {
+        max-width: 700px;
+        margin: 10px auto;
+        background-color: rgb(31, 199, 131);
+        border-radius: 10px;
+        text-align: center;
+        padding: 5px 0;
+        font-size: 24px;
+      }
+      .btn {
+        max-width: 300px;
+        margin: 30px auto;
+      }
+      .button {
+        display: block;
+        text-decoration: none;
+        color: black;
+        background-color: rgb(31, 199, 131);
+        margin: 15px 25px;
+        text-align: center;
+        font-size: 22px;
+        padding: 10px 20px;
+        border-radius: 7px;
+      }
+      .button:hover {
+        background-color: rgb(63, 112, 210);
+      }
+      .js_button {
+        background-color: bisque;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div>Задача 2</div>
+      <p>Дано інформацію про прибуток К магазинів протягом тижня</p>
+    </div>
+    <div class="content">
+      <p>Відповідь до задачі:</p>
+      <script>
+        const minVal = 1
+        const maxVal = 3000
+        const dayNums = 7
+
+        function randomValue(minVal, maxVal) {
+          return minVal + Math.floor(Math.random() * (maxVal - minVal + 1))
+        }
+
+        function createRandomArr(minVal, maxVal) {
+          let arr = []
+          for (let i = 0; i < dayNums; i++) {
+            let randomElem = randomValue(minVal, maxVal)
+            arr.push(randomElem)
+          }
+          return arr
+        }
+
+        function createRandomTable(k, minVal, maxVal) {
+          let table = []
+          for (let i = 0; i < k; i++) {
+            let randomRow = createRandomArr(minVal, maxVal)
+            table.push(randomRow)
+          }
+          return table
+        }
+
+        function displayTable(table) {
+          document.write('<table border=1px align="center">')
+          for (let rowNum = 0; rowNum < k; rowNum++) {
+            document.write('<tr>')
+            for (let colNum = 0; colNum < dayNums; colNum++) {
+              document.write(`<td>${table[rowNum][colNum]}</td>`)
+            }
+            document.write('</tr>')
+          }
+          document.write('</table>')
+        }
+
+        let k = parseInt(prompt('Введіть кількість магазинів'))
+        let table = createRandomTable(k, minVal, maxVal)
+        document.write('Згенерований масив')
+        displayTable(table)
+        //--------------------------------------------------------------------------------
+
+        // 1) загальний прибуток кожного магазину за тиждень;
+        function profitEveryStore(table) {
+          let sumForWeek = []
+          for (let rowIndex = 0; rowIndex < k; rowIndex++) {
+            let sum = 0
+            for (
+              let colIndex = 0;
+              colIndex < table[rowIndex].length;
+              colIndex++
+            ) {
+              sum += table[rowIndex][colIndex]
+            }
+            sumForWeek.push(sum)
+          }
+          return sumForWeek
+        }
+
+        document.write(
+          `<br> Загальний прибуток кожного магазину за тиждень: ${profitEveryStore(
+            table
+          )}<br><br>`
+        )
+
+        // 3) загальний прибуток за робочі дні
+
+        function profitStoresForWorkDays(table) {
+          let sumForWorkDays = 0
+          for (let rowIndex = 0; rowIndex < k; rowIndex++) {
+            for (let colIndex = 0; colIndex < 5; colIndex++) {
+              sumForWorkDays += table[rowIndex][colIndex]
+            }
+          }
+          return sumForWorkDays
+        }
+
+        document.write(
+          ` Загальний прибуток за робочі дні: ${profitStoresForWorkDays(
+            table
+          )}<br><br>`
+        )
+
+        // 5) максимальний прибуток за середу
+
+        function profitStoresForWednesday(table) {
+          let sumForWednesday = 0
+          for (let rowIndex = 0; rowIndex < k; rowIndex++) {
+            for (let colIndex = 2; colIndex < 3; colIndex++) {
+              sumForWednesday += table[rowIndex][colIndex]
+            }
+          }
+          return sumForWednesday
+        }
+
+        document.write(
+          ` Загальний прибуток за середу: ${profitStoresForWednesday(
+            table
+          )}<br><br>`
+        )
+
+        // 7) відсортувати кожен тиждень за зростанням
+
+        function sortArr(table) {
+          for (let rowIndex = 0; rowIndex < table.length; rowIndex++) {
+            table[rowIndex].sort((el1, el2) => el1 - el2)
+          }
+          return table
+        }
+
+        document.write(`Упорядковай масив за зростанням:<br>`)
+        displayTable(sortArr(table))
+
+        //---------------------------------------------------
+
+        // 8) відсортувати тижні (рядки) за спаданням максимального елемента у цьому тижні (рядку),
+        // тобто при порівнянні рядків потрібно порівнювати максимальні елементи у кожному з цих рядків
+
+        // const result = table.sort(
+        //   (shop1, shop2) => Math.max(...shop2) - Math.max(...shop1)
+        // )
+
+        // document.write(
+        //   `<br>Відсортовані рядки за спаданням максимального елемента у цьому рядку <br>`
+        // )
+        // displayTable(sortArr(result))
+
+        /* До рішення цієї задачі я так і не додумався, його мені підсказав мій товариш.
+        Я пам'ятаю, Андрій на лекціях використовував цей оператор [...arr], але наче детально 
+        його не розбирали. Підкажіть будь-ласка, може я пропустив де про нього розповідав Андрій, 
+        або, якщо ні, то чи будемо ми його детально розглядати. Інформацію про нього я знайшов, але
+        всеодно до кінця не зрозуміло. Дякую)*/
+
+        //------------------------------------------------------
+
+        // 9) упорядкувати тижні (рядки) за спаданням суми елементів у рядку
+
+        function sortArr2(table) {
+          let sumForWeek = []
+          for (let rowIndex = 0; rowIndex < k; rowIndex++) {
+            let sum = 0
+            for (
+              let colIndex = 0;
+              colIndex < table[rowIndex].length;
+              colIndex++
+            ) {
+              sum += table[rowIndex][colIndex]
+            }
+            sumForWeek.push(sum)
+            sumForWeek.sort((el1, el2) => el2 - el1)
+          }
+
+          return sumForWeek
+        }
+
+        document.write(
+          `Упорядковані рядки за спаданням суми елементів у рядку:<br> ${sortArr2(
+            table
+          )}<br>`
+        )
+      </script>
+    </div>
+    <div class="btn">
+      <a class="button" href="./index.html">На головну</a>
+    </div>
+  </body>
+</html>
